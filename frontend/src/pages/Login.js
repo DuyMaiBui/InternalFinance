@@ -20,10 +20,13 @@ function Login({ setAuth }) {
         const response = await api.get('/api/auth/check-admin');
         setIsFirstAdmin(!response.data.hasAdmin);
         if (!response.data.hasAdmin) {
-          setIsRegister(true);
+          setIsRegister(true); // Only allow registration for first admin
+        } else {
+          setIsRegister(false); // Force login mode for all other cases
         }
       } catch (error) {
         console.log('Error checking admin status');
+        setIsRegister(false); // Default to login mode on error
       } finally {
         setLoading(false);
       }
@@ -38,10 +41,6 @@ function Login({ setAuth }) {
       let endpoint;
       if (isFirstAdmin && isRegister) {
         endpoint = '/api/auth/register/admin';
-      } else if (isRegister) {
-        alert('Chỉ có admin mới có thể tạo tài khoản mới. Vui lòng liên hệ admin.');
-        setSubmitting(false);
-        return;
       } else {
         endpoint = '/api/auth/login';
       }
@@ -135,17 +134,15 @@ function Login({ setAuth }) {
             </button>
           </div>
 
-          <div className="text-center">
-            {!isFirstAdmin && (
-              <button
-                type="button"
-                className="font-medium text-blue-600 hover:text-blue-500"
-                onClick={() => setIsRegister(!isRegister)}
-              >
-                {isRegister ? 'Đã có tài khoản? Đăng nhập' : 'Cần tài khoản? Đăng ký'}
-              </button>
-            )}
-          </div>
+          {/* User registration is disabled - only admin can create accounts */}
+          {!isFirstAdmin && (
+            <div className="text-center">
+              <p className="text-sm text-gray-500">
+                Chỉ có admin mới có thể tạo tài khoản mới.<br />
+                Vui lòng liên hệ admin để được cấp tài khoản.
+              </p>
+            </div>
+          )}
         </form>
       </div>
       

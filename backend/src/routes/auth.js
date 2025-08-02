@@ -60,11 +60,8 @@ router.post('/register/admin', async (req, res) => {
   }
 });
 
-// Register new user - DISABLED
-router.post('/register', authenticate, async (req, res) => {
-  // User registration via admin is now disabled
-  return res.status(403).json({ error: 'Tính năng tạo tài khoản mới đã bị vô hiệu hóa' });
-});
+// Regular user registration is completely disabled
+// Only admin can be created via /register/admin route for initial setup
 
 // Login
 router.post('/login', async (req, res) => {
