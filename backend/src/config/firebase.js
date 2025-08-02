@@ -2,14 +2,18 @@ const admin = require('firebase-admin');
 require('dotenv').config();
 
 // Initialize Firebase Admin SDK
-// You'll need to add your service account key to the .env file
-const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT ? 
-  JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT) : 
-  require('../../firebase-service-account.json');
+try {
+  // Use the service account JSON file directly
+  const serviceAccount = require('../../firebase-service-account.json');
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+
+  console.log('Firebase initialized successfully');
+} catch (error) {
+  console.error('Firebase initialization error:', error);
+}
 
 const db = admin.firestore();
 

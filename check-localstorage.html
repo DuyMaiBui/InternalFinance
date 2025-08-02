@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check LocalStorage</title>
+</head>
+<body>
+    <h1>Kiểm tra LocalStorage</h1>
+    <p>Mở trang này trong browser sau khi đăng nhập để xem các giá trị trong localStorage</p>
+    
+    <h2>Giá trị hiện tại:</h2>
+    <pre id="storage-content"></pre>
+    
+    <button onclick="checkStorage()">Refresh</button>
+    <button onclick="clearStorage()">Clear All</button>
+    
+    <script>
+        function checkStorage() {
+            const content = document.getElementById('storage-content');
+            const data = {
+                token: localStorage.getItem('token'),
+                userName: localStorage.getItem('userName'),
+                userColor: localStorage.getItem('userColor'),
+                userRole: localStorage.getItem('userRole')
+            };
+            content.textContent = JSON.stringify(data, null, 2);
+        }
+        
+        function clearStorage() {
+            localStorage.clear();
+            checkStorage();
+            alert('LocalStorage đã được xóa!');
+        }
+        
+        // Check on load
+        checkStorage();
+    </script>
+</body>
+</html>
