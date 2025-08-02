@@ -3,8 +3,15 @@ require('dotenv').config();
 
 // Initialize Firebase Admin SDK
 try {
-  // Use the service account JSON file directly
-  const serviceAccount = require('../../firebase-service-account.json');
+  let serviceAccount;
+  
+  // Check if we have environment variable for service account (production)
+  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  } else {
+    // Use the service account JSON file directly (development)
+    serviceAccount = require('../../firebase-service-account.json');
+  }
 
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
